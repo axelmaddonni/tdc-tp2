@@ -1,48 +1,67 @@
 import sys
+import time
+
 from scapy.all import *
+from route import Route
 
-MAX_ITER = 3
+MAX_ITER = 30
+MAX_TTL = 30
 
-def do_syn(dom, ttl_):
-    synans, _= sr(
-            IP(dst=dom, ttl=ttl_) / TCP(flags=0x02),
-            timeout=ttl_*0.1, verbose=False)
-    for snd,rcv in synans:
-        if isinstance(rcv.payload, TCP):
-            return rcv.src
-    return None
+def icmp_traceroute(hostname):
+    dst_ip = socket.gethostbyname(hostname)
 
-def icmp_traceroute(dom):
+    route = Route(dst_ip, MAX_TTL)
+
+    t_start = time.clock()
     ttl_ = 0
-    found = False
-    while not found and ttl_ < 30:
-        ttl_ += 1
-        for it in range(MAX_ITER):
-            printed = False
-            # verbose=False para que no tire info innecesaria.
-            ans, _ = sr(
-                    IP(dst=dom, ttl=ttl_) / ICMP(),
-                    timeout=ttl_*0.1, verbose=False)
-            for snd,rcv in ans:
-                if rcv.type == 0:
-                    found = True
-                print ttl_, rcv.src, rcv.type
-                printed = True
-            if len(ans) == 0:
-                syn_result = do_syn(dom, ttl_)
-                if syn_result is not None:
-                    print ttl_, syn_result, 'SA'
-                    printed = True
-                    found = True
-            if not printed:
-                print ttl_, '* * *'
+    last_id = 0
+    for _ in range(MAX_ITER):
+        base_id = last_id
 
+        pkts = []
+        for ttl in range(1, MAX_TTL + 1):
+            pkts.append(IP(dst=dst_ip, ttl=ttl) / ICMP(id=base_id+ttl))
+        last_id = base_id + MAX_TTL
+
+        try:
+            ans, _ = sr(pkts, verbose=False, timeout=1)
+        except socket.error as e:
+            sys.exit(e)
+
+        for snd, rcv in ans:
+            # ICMP echo reply
+            if rcv.type == 0:
+                id = rcv[1].id
+            # ICMP time exceeded
+            elif rcv.type == 11:
+                id = rcv[3].id
+
+            else:
+                continue
+
+            if id < base_id + 1 or id > base_id + 30:
+                continue
+
+            rtt = (rcv.time - snd.sent_time) * 1000
+            route[id - base_id].append((rcv.src, rcv.type, rtt))
+
+    # for ttl in range(1, MAX_TTL + 1):
+    #     print route[ttl]
+
+    return route
 
     # Para debugear o comparar
     # traceroute(dom)
 
 
-if len(sys.argv) > 1:
-    icmp_traceroute(sys.argv[1])
-else:
-    print 'Te falto indicar el dominio.'
+if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        route = icmp_traceroute(sys.argv[1])
+        path = route.get_route()
+        for ttl, x in path:
+            if x is not None:
+                print ttl, x[0], round(x[1], 3), 'ms'
+            else:
+                print ttl, '* * *'
+    else:
+        print 'Te falto indicar el dominio.'
