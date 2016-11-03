@@ -6,3 +6,9 @@ tdc-tp2 2c 2016
     python2 src/traceroute.py www.google.com
 
 Si quieren que tarde menos en correr, cambien MAX_ITER dentro de traceroute.py.
+
+### Requerimientos
+
+* scapy
+
+* pygeoip

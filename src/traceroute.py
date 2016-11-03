@@ -3,8 +3,9 @@ import time
 
 from scapy.all import *
 from route import Route
+from geo import Geo
 
-MAX_ITER = 30
+MAX_ITER = 1
 MAX_TTL = 30
 
 def icmp_traceroute(hostname):
@@ -58,9 +59,10 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         route = icmp_traceroute(sys.argv[1])
         path = route.get_route()
+        geo = Geo()
         for ttl, x in path:
             if x is not None:
-                print ttl, x[0], round(x[1], 3), 'ms'
+                print ttl, x[0], round(x[1], 3), 'ms', geo.locate(x[0])
             else:
                 print ttl, '* * *'
     else:
