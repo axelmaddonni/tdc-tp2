@@ -5,7 +5,7 @@ from scapy.all import *
 from route import Route
 from geo import Geo
 
-MAX_ITER = 1
+MAX_ITER = 3
 MAX_TTL = 30
 
 def icmp_traceroute(hostname):
@@ -58,11 +58,13 @@ def icmp_traceroute(hostname):
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         route = icmp_traceroute(sys.argv[1])
-        path = route.get_route()
+        path, std_dev = route.get_route()
         geo = Geo()
-        for ttl, x in path:
+        print std_dev
+        for ttl, x in path.iteritems():
             if x is not None:
-                print ttl, x[0], round(x[1], 3), 'ms', geo.locate(x[0])
+                print ttl, x[0], x[1:], geo.locate(x[0])[0], \
+                        "RUTA SUBMARINA" if abs(x[-1]) > 1.0 else ""
             else:
                 print ttl, '* * *'
     else:

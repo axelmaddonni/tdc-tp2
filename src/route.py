@@ -1,4 +1,5 @@
 from collections import defaultdict
+import math
 
 def avg(l):
     return sum(map(float, l)) / len(l)
@@ -30,11 +31,23 @@ class Route:
 
 
     def get_route(self):
-        path = []
+        path = {}
         for ttl in range(1, self._max_ttl + 1):
             responses = self._hops[ttl]
-            path.append((ttl, analyze_rtts(responses)))
+            path[ttl] = analyze_rtts(responses)
             if all(map(lambda x: x[1] == 0, responses)) and len(responses) > 0:
                 break
-        return path
+        last_rtt = 0.0
+        rtts = []
+        for ttl, x in path.iteritems():
+            if x is not None:
+                path[ttl] = (x[0], x[1], max(0.0, x[1] - last_rtt))
+                rtts.append(max(0.0, x[1] - last_rtt))
+                last_rtt = x[1]
+        x_avg = avg(rtts)
+        std_dev = math.sqrt(avg(map(lambda x_i: (x_i - x_avg)**2.0, rtts)))
+        for ttl, x in path.iteritems():
+            if x is not None:
+                path[ttl] = (x[0], x[1], x[2], (x[2] - x_avg) / std_dev)
+        return path, std_dev
 
