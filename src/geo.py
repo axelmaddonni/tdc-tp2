@@ -9,7 +9,7 @@ class Geo():
     def __init__(self):
         self._geoip = pygeoip.GeoIP('data/GeoLiteCity.dat')
 
-    def locate(self, ip, use_service = True):
+    def locate(self, ip, use_service = False):
         try:
             if not use_service:
                 raise
@@ -33,8 +33,8 @@ class Geo():
             else:
                 location = '%s, %s' % (gir['city'], gir['country_name'])
 
-            latitude  = '*' if gir is None else gir['latitude']
-            longitude = '*' if gir is None else gir['longitude']
+            latitude  = '0' if gir is None else gir['latitude']
+            longitude = '0' if gir is None else gir['longitude']
             return location, latitude, longitude
 
 

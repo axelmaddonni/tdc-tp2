@@ -6,7 +6,7 @@ from route import Route, avg
 from geo import Geo
 from graficos import Graficos
 
-MAX_ITER = 3
+MAX_ITER = 30
 MAX_TTL = 30
 
 def icmp_traceroute(hostname):
@@ -62,10 +62,6 @@ if __name__ == '__main__':
         route = icmp_traceroute(hostname)
         path, std_dev = route.get_route()
 
-        gr = Graficos(route, hostname)
-        gr.hacer_grafico1()
-
-
         print route.rel_rtt_mean()
         print route.rel_rtt_stddev()
         for ttl, x in path.iteritems():
@@ -77,6 +73,11 @@ if __name__ == '__main__':
                 print ttl, x.ip(), x.abs_rtt(), x.rel_rtt(), x.rel_zrtt(), \
                     x.location().city(), \
                     "RUTA SUBMARINA" if x.rel_zrtt() > 1.91 else ""
+
+        gr = Graficos(route, hostname)
+        gr.hacer_grafico1()
+        gr.hacer_grafico2()
+        gr.hacer_grafico3()
 
     else:
         print 'Te falto indicar el dominio.'
