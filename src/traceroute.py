@@ -2,10 +2,10 @@ import sys
 import time
 
 from scapy.all import *
-from route import Route
+from route import Route, avg
 from geo import Geo
 
-MAX_ITER = 3
+MAX_ITER = 30
 MAX_TTL = 30
 
 def icmp_traceroute(hostname):
@@ -44,7 +44,7 @@ def icmp_traceroute(hostname):
                 continue
 
             rtt = (rcv.time - snd.sent_time) * 1000
-            route[id - base_id].append((rcv.src, rcv.type, rtt))
+            route[id - base_id].add_reply((rcv.src, rcv.type, rtt))
 
     # for ttl in range(1, MAX_TTL + 1):
     #     print route[ttl]
@@ -59,13 +59,20 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         route = icmp_traceroute(sys.argv[1])
         path, std_dev = route.get_route()
+
         geo = Geo()
-        print std_dev
+
+
+        print route.rel_rtt_mean()
+        print route.rel_rtt_stddev()
         for ttl, x in path.iteritems():
-            if x is not None:
-                print ttl, x[0], x[1:], geo.locate(x[0])[0], \
-                        "RUTA SUBMARINA" if abs(x[-1]) > 1.0 else ""
-            else:
+            if x.no_replies():
                 print ttl, '* * *'
+            elif route.repeated_dst(ttl):
+                break
+            else:
+                print ttl, x.ip(), x.abs_rtt(), x.rel_rtt(), x.rel_zrtt(), \
+                geo.locate(x.ip())[0], \
+                "RUTA SUBMARINA" if x.rel_zrtt() > 1.91 else ""
     else:
         print 'Te falto indicar el dominio.'

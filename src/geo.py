@@ -9,7 +9,7 @@ class Geo():
     def __init__(self):
         self._geoip = pygeoip.GeoIP('data/GeoLiteCity.dat')
 
-    def locate(self, ip, use_service = False):
+    def locate(self, ip, use_service = True):
         try:
             if not use_service:
                 raise
