@@ -26,3 +26,9 @@ Si quieren que tarde menos en correr, cambien MAX_ITER dentro de traceroute.py.
 ### Universidades
 
 * Gonza: www.es.osaka-u.ac.jp
+
+### TODO
+
+* informe
+
+* que el codigo acepte ips
