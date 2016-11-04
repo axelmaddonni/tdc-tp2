@@ -4,8 +4,9 @@ import time
 from scapy.all import *
 from route import Route, avg
 from geo import Geo
+from graficos import Graficos
 
-MAX_ITER = 30
+MAX_ITER = 3
 MAX_TTL = 30
 
 def icmp_traceroute(hostname):
@@ -16,7 +17,10 @@ def icmp_traceroute(hostname):
     t_start = time.clock()
     ttl_ = 0
     last_id = 0
-    for _ in range(MAX_ITER):
+    for i in range(MAX_ITER):
+        sys.stdout.write('Enviando...  %s / %s      \r' % \
+                (str(i+1).zfill(2), str(MAX_ITER).zfill(2)))
+        sys.stdout.flush()
         base_id = last_id
 
         pkts = []
@@ -31,20 +35,17 @@ def icmp_traceroute(hostname):
 
         for snd, rcv in ans:
             # ICMP echo reply
-            if rcv.type == 0:
-                id = rcv[1].id
+            if rcv.type == 0: id = rcv[1].id
             # ICMP time exceeded
-            elif rcv.type == 11:
-                id = rcv[3].id
-
-            else:
-                continue
+            elif rcv.type == 11: id = rcv[3].id
+            else: continue
 
             if id < base_id + 1 or id > base_id + 30:
                 continue
 
             rtt = (rcv.time - snd.sent_time) * 1000
             route[id - base_id].add_reply((rcv.src, rcv.type, rtt))
+    print ''
 
     # for ttl in range(1, MAX_TTL + 1):
     #     print route[ttl]
@@ -57,10 +58,12 @@ def icmp_traceroute(hostname):
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        route = icmp_traceroute(sys.argv[1])
+        hostname = sys.argv[1]
+        route = icmp_traceroute(hostname)
         path, std_dev = route.get_route()
 
-        geo = Geo()
+        gr = Graficos(route, hostname)
+        gr.hacer_grafico1()
 
 
         print route.rel_rtt_mean()
@@ -72,7 +75,8 @@ if __name__ == '__main__':
                 break
             else:
                 print ttl, x.ip(), x.abs_rtt(), x.rel_rtt(), x.rel_zrtt(), \
-                geo.locate(x.ip())[0], \
-                "RUTA SUBMARINA" if x.rel_zrtt() > 1.91 else ""
+                    x.location().city(), \
+                    "RUTA SUBMARINA" if x.rel_zrtt() > 1.91 else ""
+
     else:
         print 'Te falto indicar el dominio.'

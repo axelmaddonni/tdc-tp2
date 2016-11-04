@@ -1,26 +1,33 @@
 from collections import defaultdict
 import math
 
+from geo import Geo
+
 # RTT absoluto quiere decir desde mi pc hasta el hop i.
 # RTT relativo (o RTT a secas) quiere decir desde el hop i-1 hasta el hop i.
 
 def avg(l):
     return sum(map(float, l)) / len(l)
 
-class Gateway():
-    def __init__(self, ip, absolute_rtts, zrtt):
+global_geo = Geo()
+
+class Location():
+    def __init__(self, ip):
         self._ip = ip
-        self._absolute_rtts = absolute_rtts
-        self._zrtt = zrtt
 
-    def ip(self):
-        return self._ip
+        location = global_geo.locate(ip)
+        self._city = location[0]
+        self._latitude = location[1]
+        self._longitude = location[2]
 
-    def absolute_rtts(self):
-        return self._absolute_rtts
+    def city(self):
+        return self._city
 
-    def zrtt(self):
-        return self._zrtt
+    def latitude(self):
+        return self._latitude
+
+    def longitude(self):
+        return self._longitude
 
 class Hop():
     def __init__(self, ttl, route):
@@ -28,6 +35,12 @@ class Hop():
         self._replies = []
         self._route = route
         self._ip = ''
+        self._location = None
+
+    def location(self):
+        if self._location is None:
+            self._location = Location(self._ip)
+        return self._location
 
     def _get_ip_and_absolute_rtts(self):
         ips = defaultdict(list)
