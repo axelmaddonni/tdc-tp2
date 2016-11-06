@@ -48,7 +48,6 @@ class Graficos():
         plt.ylabel('Gateway')
         plt.xlabel('RTT (ms)')
         plt.ylim(0, len(datos) + 1)
-        plt.xlim(-1, max(map(avg, datos))+50)
         plt.title('RTTs - ' + self._hostname)
         plt.tight_layout()
         plt.savefig ('grafico1-'+self._hostname.replace('.', '-')+'.pdf')
