@@ -87,7 +87,7 @@ if __name__ == '__main__':
                         round(x.abs_rtt(), 3), \
                         round(x.rel_rtt(), 3), \
                         round(x.rel_zrtt(), 3), \
-                        x.location().city(), \
+                        x.location().city().encode("utf-8"), \
                         "SI" if x.rel_zrtt() > tau else "")
 
         if not fallo_importar_graficos:
