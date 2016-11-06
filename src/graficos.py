@@ -122,7 +122,6 @@ class Graficos():
         mapa.drawcoastlines()
         mapa.fillcontinents()
 
-        plt.tight_layout()
         plt.title('Traceroute - ' + self._hostname)
         plt.savefig('grafico3-'+self._hostname.replace('.', '-')+'.pdf')
 
