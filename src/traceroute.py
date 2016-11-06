@@ -8,7 +8,7 @@ from graficos import Graficos, fallo_importar_graficos
 from outliers import thompson_tau, fallo_importar_stats
 
 
-MAX_ITER = 3
+MAX_ITER = 30
 MAX_TTL = 30
 
 def icmp_traceroute(hostname):
@@ -60,7 +60,7 @@ def icmp_traceroute(hostname):
 
 if __name__ == '__main__':
 
-    tau = thompson_tau(MAX_ITER)
+    tau = thompson_tau(MAX_ITER) if not fallo_importar_stats else 1.0
     output_format = '{:^3} {:^16} {:^8} {:^7} {:^7}  {:^25} {:^10}'
     if len(sys.argv) > 1:
         hostname = sys.argv[1]
@@ -71,7 +71,7 @@ if __name__ == '__main__':
         # print route.rel_rtt_stddev()
 
         print output_format.format(
-            'TTL', 'IP', 'RTT', 'Rel RTT', 'ZRTT', 'Lugar', 'Es ruta')
+            'TTL', 'Gateway', 'RTT', 'Rel RTT', 'ZRTT', 'Lugar', 'Es ruta')
         print output_format.format('', '', '', '', '', '', 'submarina?')
         print '-'*84
 
@@ -82,7 +82,7 @@ if __name__ == '__main__':
                 break
             else:
                 # Es ruta submarina
-                es_sub = False if fallo_importar_stats else x.rel_zrtt() > tau
+                es_submarina = x.rel_zrtt() > tau
 
                 print output_format.format(
                         ttl, x.ip(), \
@@ -90,12 +90,12 @@ if __name__ == '__main__':
                         round(x.rel_rtt(), 3), \
                         round(x.rel_zrtt(), 3), \
                         x.location().city(), \
-                        "SI" if es_sub else "")
+                        "SI" if es_submarina else "")
 
         if not fallo_importar_graficos:
             gr = Graficos(route, hostname)
             gr.hacer_grafico1()
-            gr.hacer_grafico2()
+            gr.hacer_grafico2(tau)
             if not fallo_importar_geo:
                 gr.hacer_grafico3()
 

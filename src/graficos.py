@@ -54,7 +54,7 @@ class Graficos():
         plt.savefig ('grafico1-'+self._hostname.replace('.', '-')+'.pdf')
 
 
-    def hacer_grafico2(self):
+    def hacer_grafico2(self, tau):
         # ZRTT para cada gateway.
         ttls = self._route.ttls_with_reply()
         datos = [self._route[ttl].rel_zrtt() for ttl in ttls]
@@ -68,6 +68,9 @@ class Graficos():
         plt.ylim(-1, len(datos)+1)
         plt.xlim(-1, max(datos)*1.25)
         plt.title('ZRTT - ' + self._hostname)
+        plt.axvline(x = tau, ymin = 0, ymax = len(datos),color='g', ls='--',
+                label='Tau = '+str(round(tau,3)))
+        plt.legend()
         plt.tight_layout()
         plt.savefig ('grafico2-'+self._hostname.replace('.', '-')+'.pdf')
 
