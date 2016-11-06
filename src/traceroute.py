@@ -8,7 +8,7 @@ from graficos import Graficos, fallo_importar_graficos
 from outliers import thompson_tau, fallo_importar_stats
 
 
-MAX_ITER = 3
+MAX_ITER = 30
 MAX_TTL = 30
 
 def icmp_traceroute(hostname):
