@@ -3,8 +3,10 @@ import time
 
 from scapy.all import *
 from route import Route, avg
-from geo import Geo
-from graficos import Graficos
+from geo import Geo, fallo_importar_geo
+from graficos import Graficos, fallo_importar_graficos
+from outliers import thompson_tau, fallo_importar_stats
+
 
 MAX_ITER = 30
 MAX_TTL = 30
@@ -57,6 +59,8 @@ def icmp_traceroute(hostname):
 
 
 if __name__ == '__main__':
+
+    tau = thompson_tau(MAX_ITER)
     if len(sys.argv) > 1:
         hostname = sys.argv[1]
         route = icmp_traceroute(hostname)
@@ -70,14 +74,22 @@ if __name__ == '__main__':
             elif route.repeated_dst(ttl):
                 break
             else:
-                print ttl, x.ip(), x.abs_rtt(), x.rel_rtt(), x.rel_zrtt(), \
-                    x.location().city(), \
-                    "RUTA SUBMARINA" if x.rel_zrtt() > 1.91 else ""
+                # Es ruta submarina
+                es_sub = False if fallo_importar_stats else x.rel_zrtt() > tau
 
-        gr = Graficos(route, hostname)
-        gr.hacer_grafico1()
-        gr.hacer_grafico2()
-        gr.hacer_grafico3()
+                print ttl, x.ip(), \
+                    round(x.abs_rtt(), 3), \
+                    round(x.rel_rtt(), 3), \
+                    round(x.rel_zrtt(), 3), \
+                    x.location().city(), \
+                    "RUTA SUBMARINA" if es_sub else ""
+
+        if not fallo_importar_graficos:
+            gr = Graficos(route, hostname)
+            gr.hacer_grafico1()
+            gr.hacer_grafico2()
+            if not fallo_importar_geo:
+                gr.hacer_grafico3()
 
     else:
         print 'Te falto indicar el dominio.'

@@ -1,6 +1,18 @@
-import matplotlib.pyplot as plt
-import numpy as np
-from mpl_toolkits.basemap import Basemap
+fallo_importar_graficos = False
+
+try:
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from mpl_toolkits.basemap import Basemap
+except:
+    print 'Te olvidaste de instalar las dependencias! No se van a generar ' \
+        'los graficos'
+    print 'Corre'
+    print '    make install-deps'
+    print ''
+    fallo_importar_graficos = True
+
+
 
 
 from route import avg

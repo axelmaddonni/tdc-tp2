@@ -5,25 +5,42 @@ tdc-tp2 2c 2016
 
     python2 src/traceroute.py www.google.com
 
-Si quieren que tarde menos en correr, cambien MAX_ITER dentro de traceroute.py.
+Si quieren que tarde menos en correr, cambien `MAX_ITER` dentro de `traceroute.py`. Es importante que se corra desde `.` y no desde `src` para que pueda acceder a la carpeta data.
 
 ### Requerimientos
 
+
+Generales:
+
 * scapy
 
-    pip2 install --user scapy
+
+Localizacion:
 
 * pygeoip
 
-    pip2 install --user pygeoip
+Tau de Thompson:
+
+* scipy
+
+
+Generar gráficos:
 
 * basemap
 
-    pip2 install --user -Iv https://sourceforge.net/projects/matplotlib/files/matplotlib-toolkits/basemap-1.0.7/basemap-1.0.7.tar.gz/download
+* numpy
+
+* matplotlib
 
 
 
-### Universidades
+Todo eso se puede instalar corriendo
+
+    make install-deps
+
+
+
+## Universidades
 
 * Gonza: www.es.osaka-u.ac.jp
 
@@ -31,4 +48,3 @@ Si quieren que tarde menos en correr, cambien MAX_ITER dentro de traceroute.py.
 
 * informe
 
-* que el codigo acepte ips
