@@ -8,7 +8,7 @@ from graficos import Graficos, fallo_importar_graficos
 from outliers import thompson_tau, fallo_importar_stats
 
 
-MAX_ITER = 30
+MAX_ITER = 3
 MAX_TTL = 30
 
 def icmp_traceroute(hostname):
@@ -59,9 +59,10 @@ def icmp_traceroute(hostname):
 
 
 if __name__ == '__main__':
-
+    if MAX_ITER < 3:
+        print 'WARNING: MAX_ITER deberia ser 3 o mas.'
     tau = thompson_tau(MAX_ITER) if not fallo_importar_stats else 1.0
-    output_format = '{:^3} {:^16} {:^8} {:^7} {:^7}  {:^25} {:^10}'
+    output_format = '{:^3} {:^16} {:^8} {:^7} {:^7}  {:^30} {:^10}'
     if len(sys.argv) > 1:
         hostname = sys.argv[1]
         route = icmp_traceroute(hostname)
@@ -73,7 +74,7 @@ if __name__ == '__main__':
         print output_format.format(
             'TTL', 'Gateway', 'RTT', 'Rel RTT', 'ZRTT', 'Lugar', 'Es ruta')
         print output_format.format('', '', '', '', '', '', 'submarina?')
-        print '-'*84
+        print '-'*91
 
         for ttl, x in path.iteritems():
             if x.no_replies():
@@ -81,16 +82,13 @@ if __name__ == '__main__':
             elif route.repeated_dst(ttl):
                 break
             else:
-                # Es ruta submarina
-                es_submarina = x.rel_zrtt() > tau
-
                 print output_format.format(
                         ttl, x.ip(), \
                         round(x.abs_rtt(), 3), \
                         round(x.rel_rtt(), 3), \
                         round(x.rel_zrtt(), 3), \
                         x.location().city(), \
-                        "SI" if es_submarina else "")
+                        "SI" if x.rel_zrtt() > tau else "")
 
         if not fallo_importar_graficos:
             gr = Graficos(route, hostname)

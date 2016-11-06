@@ -77,6 +77,7 @@ class Graficos():
 
     def hacer_grafico3(self):
         # Mapa del traceroute.
+        plt.figure()
         ttls = self._route.ttls_with_reply()
         lons, lats = [], []
         for ttl in ttls:
@@ -92,11 +93,10 @@ class Graficos():
 	urcrnrlon = max(lons) + w * 0.1
 	urcrnrlat = max(lats) + h * 0.1
 
-        plt.figure(figsize=(5,5))
         # http://matplotlib.org/basemap/users/examples.html
-        mapa = Basemap(llcrnrlon=llcrnrlon, llcrnrlat=llcrnrlat,
-                urcrnrlon=urcrnrlon, urcrnrlat=urcrnrlat,
-                projection='merc')
+        mapa = Basemap(projection='cyl',
+            llcrnrlon=llcrnrlon, llcrnrlat=llcrnrlat,
+            urcrnrlon=urcrnrlon, urcrnrlat=urcrnrlat)
 
         last_ttl = 1
 
@@ -122,8 +122,9 @@ class Graficos():
         mapa.drawcoastlines()
         mapa.fillcontinents()
 
+        plt.tight_layout()
         plt.title('Traceroute - ' + self._hostname)
-        plt.savefig ('grafico3-'+self._hostname.replace('.', '-')+'.pdf')
+        plt.savefig('grafico3-'+self._hostname.replace('.', '-')+'.pdf')
 
 
 
