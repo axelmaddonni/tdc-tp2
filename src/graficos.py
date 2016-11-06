@@ -97,7 +97,7 @@ class Graficos():
             llcrnrlon=llcrnrlon, llcrnrlat=llcrnrlat,
             urcrnrlon=urcrnrlon, urcrnrlat=urcrnrlat)
 
-        last_ttl = 1
+        last_ttl = min(ttls)
 
         for ttl in ttls[1:]:
             loc1 = self._route[last_ttl].location()
