@@ -44,10 +44,10 @@ class Graficos():
 
         plt.figure(figsize=(20,10))
         plt.boxplot(datos, 0, 'rs', 0)
-        plt.yticks(range(len(datos)), map(self._gateway_name, ttls), rotation='horizontal')
+        plt.yticks(range(1,len(datos)+1), map(self._gateway_name, ttls), rotation='horizontal')
         plt.ylabel('Gateway')
         plt.xlabel('RTT (ms)')
-        plt.ylim(-0.5, len(datos)+1)
+        plt.ylim(0, len(datos) + 1)
         plt.xlim(-1, max(map(avg, datos))+50)
         plt.title('RTTs - ' + self._hostname)
         plt.tight_layout()
@@ -62,7 +62,7 @@ class Graficos():
 
         plt.figure(figsize=(15,8))
         plt.barh(range(len(datos)), datos)
-        plt.yticks(range(len(datos)), map(self._gateway_name, ttls), rotation='horizontal')
+        plt.yticks(map(lambda x: x+0.5, range(len(datos))), map(self._gateway_name, ttls), rotation='horizontal')
         plt.ylabel('Gateway')
         plt.xlabel('ZRTT')
         plt.ylim(-1, len(datos)+1)
