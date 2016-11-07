@@ -44,11 +44,10 @@ class Graficos():
 
         plt.figure(figsize=(20,10))
         plt.boxplot(datos, 0, 'rs', 0)
-        plt.yticks(range(len(datos)), map(self._gateway_name, ttls), rotation='horizontal')
+        plt.yticks(range(1,len(datos)+1), map(self._gateway_name, ttls), rotation='horizontal')
         plt.ylabel('Gateway')
         plt.xlabel('RTT (ms)')
-        plt.ylim(-0.5, len(datos)+1)
-        plt.xlim(-1, max(map(avg, datos))+50)
+        plt.ylim(0, len(datos) + 1)
         plt.title('RTTs - ' + self._hostname)
         plt.tight_layout()
         plt.savefig ('grafico1-'+self._hostname.replace('.', '-')+'.pdf')
@@ -62,7 +61,7 @@ class Graficos():
 
         plt.figure(figsize=(15,8))
         plt.barh(range(len(datos)), datos)
-        plt.yticks(range(len(datos)), map(self._gateway_name, ttls), rotation='horizontal')
+        plt.yticks(map(lambda x: x+0.5, range(len(datos))), map(self._gateway_name, ttls), rotation='horizontal')
         plt.ylabel('Gateway')
         plt.xlabel('ZRTT')
         plt.ylim(-1, len(datos)+1)
@@ -98,7 +97,7 @@ class Graficos():
             llcrnrlon=llcrnrlon, llcrnrlat=llcrnrlat,
             urcrnrlon=urcrnrlon, urcrnrlat=urcrnrlat)
 
-        last_ttl = 1
+        last_ttl = min(ttls)
 
         for ttl in ttls[1:]:
             loc1 = self._route[last_ttl].location()
