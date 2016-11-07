@@ -47,13 +47,13 @@ Generar gráficos:
 
 
 
-  wget http://download.osgeo.org/geos/geos-3.4.2.tar.bz2
-  tar xjf geos-3.4.2.tar.bz2
-  cd geos-3.4.2
-  ./configure
-  make
-  sudo make install
-  export GEOS_DIR="/usr/local/lib"
+    wget http://download.osgeo.org/geos/geos-3.4.2.tar.bz2
+    tar xjf geos-3.4.2.tar.bz2
+    cd geos-3.4.2
+    ./configure
+    make
+    sudo make install
+    export GEOS_DIR="/usr/local/lib"
 
 
 Todas (excepto libgeos) se puede instalar corriendo
