@@ -39,8 +39,6 @@ Generar gráficos:
 
     * Para compilar desde los sources:
 
-* asdad 
-
 
 
 
