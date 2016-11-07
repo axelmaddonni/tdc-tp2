@@ -7,7 +7,7 @@ tdc-tp2 2c 2016
 
 Si quieren que tarde menos en correr, cambien `MAX_ITER` dentro de `traceroute.py`. Es importante que se corra desde `.` y no desde `src` para que pueda acceder a la carpeta data.
 
-### Requerimientos
+## Requerimientos
 
 
 Generales:
@@ -33,17 +33,20 @@ Generar gráficos:
 
 * matplotlib
 
-* libgeos (requerida por basemap). Se puede obtener usando package manager de su distribución (en caso de tenerla), o compilando el source.
+* libgeos (requerida por basemap). Ver al final como instalar. 
 
-    * Si se obtiene del package manager, puede haber un problema al linkear, ya que busca la librería "libgeos.so", pero se instala como "libgeos-3.4.2.so"; una solución es generar un symlink ("sudo ln -s /usr/lib/libgeos-3.4.2.so /usr/lib/libgeos.so").
+Todas (excepto libgeos) se puede instalar corriendo
 
-    * Para compilar desde los sources:
+    make install-deps
 
-
-
-
+### Instalando libgeos
 
 
+Se puede obtener usando package manager de su distribución (en caso de tenerla), o compilando el source.
+
+Si se obtiene del package manager, puede haber un problema al linkear, ya que busca la librería "libgeos.so", pero se instala como "libgeos-3.4.2.so"; una solución es generar un symlink ("sudo ln -s /usr/lib/libgeos-3.4.2.so /usr/lib/libgeos.so").
+
+Para compilar desde los sources:
 
     wget http://download.osgeo.org/geos/geos-3.4.2.tar.bz2
     tar xjf geos-3.4.2.tar.bz2
@@ -53,10 +56,6 @@ Generar gráficos:
     sudo make install
     export GEOS_DIR="/usr/local/lib"
 
-
-Todas (excepto libgeos) se puede instalar corriendo
-
-    make install-deps
 
 
 
