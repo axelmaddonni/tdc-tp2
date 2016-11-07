@@ -62,6 +62,9 @@ Para compilar desde los sources:
 
 
 
+Notar que no es vital tener libgeos (y basemap) porque solo sirven para generar el mapamundi con los gateways, el traceroute funciona de todas maneras sin estas librerías.
+
+
 
 ## Universidades
 
