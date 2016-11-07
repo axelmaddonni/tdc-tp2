@@ -39,6 +39,13 @@ Generar gráficos:
 
     * Para compilar desde los sources:
 
+* asdad 
+
+
+
+
+
+
 
   wget http://download.osgeo.org/geos/geos-3.4.2.tar.bz2
   tar xjf geos-3.4.2.tar.bz2
