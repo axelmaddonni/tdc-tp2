@@ -41,9 +41,6 @@ class Graficos():
         # RTTs para cada gateway.
         ttls = self._route.ttls_with_reply()
         datos = [self._route[ttl].rel_rtts() for ttl in ttls]
-        #datos2 = [self._route[ttl].abs_rtts() for ttl in ttls]
-        #print datos, "\n"
-        #print datos2
 
         plt.figure(figsize=(20,10))
         plt.boxplot(datos, 0, 'rs', 0)
