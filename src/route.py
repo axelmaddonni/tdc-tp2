@@ -84,6 +84,14 @@ class Hop():
             while self._route[prev].no_replies() and prev > 1: prev -= 1
             return max(0.0, self.abs_rtt() - self._route[prev].abs_rtt())
 
+    def rel_rtts(self):
+        if self._ttl == 1:
+            return self.abs_rtts()
+        else:
+            prev = self._ttl - 1
+            while self._route[prev].no_replies() and prev > 1: prev -= 1
+            return map(lambda x: x - self._route[prev].abs_rtt(), self.abs_rtts())
+
     def rel_zrtt(self):
         return (self.rel_rtt() - self._route.rel_rtt_mean()) / self._route.rel_rtt_stddev()
 

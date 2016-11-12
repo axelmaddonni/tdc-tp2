@@ -40,15 +40,18 @@ class Graficos():
     def hacer_grafico1(self):
         # RTTs para cada gateway.
         ttls = self._route.ttls_with_reply()
-        datos = [self._route[ttl].abs_rtts() for ttl in ttls]
+        datos = [self._route[ttl].rel_rtts() for ttl in ttls]
+        #datos2 = [self._route[ttl].abs_rtts() for ttl in ttls]
+        #print datos, "\n"
+        #print datos2
 
         plt.figure(figsize=(20,10))
         plt.boxplot(datos, 0, 'rs', 0)
         plt.yticks(range(1,len(datos)+1), map(self._gateway_name, ttls), rotation='horizontal')
         plt.ylabel('Gateway')
-        plt.xlabel('RTT (ms)')
+        plt.xlabel('RTT entre saltos (ms)')
         plt.ylim(0, len(datos) + 1)
-        plt.title('RTTs - ' + self._hostname)
+        plt.title('RTTs entre saltos - ' + self._hostname)
         plt.tight_layout()
         plt.savefig ('grafico1-'+self._hostname.replace('.', '-')+'.pdf')
 
