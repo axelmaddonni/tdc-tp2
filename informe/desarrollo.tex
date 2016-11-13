@@ -1,14 +1,28 @@
 \section{Desarrollo}
 
-\PARstart Como explicamos anteriormente, \ldots
-
+\PARstart Como explicamos anteriormente, tendremos que, primero, implementar una herramienta de traceroute, y luego agregarle la funcionalidad de detección de enlaces submarinos.
 
 \subsection{Primera consigna}
 
+La primera consigna atañe al desarrollo de la herramienta de traceroute. Esta herramienta está basada, como dijimos antes, en paquetes ICMP echo request. Lo que hacemos es crear paquetes ICMP echo request con un TTL fijo usando scapy \cite{scapy}. Por ejemplo, si creamos un paquete ICMP con TTL igual a 1, el paquete será siempre descartado por nuestro router, pues cuando llegue a él, el router decrementará el TTL y como es 0 lo descartará. Esto provocará que nuestro router nos mande un paquete ICMP de tipo time exceeded.
+
+De esta manera, iremos incrementando el TTL, así los diversos nodos de la ruta irán devolviendonos paquetes ICMP de tipo time exceeded y nosotros podremos construir la ruta. Una vez que recibamos un paquete de tipo ICMP echo reply, nos detendremos. Además, si iteramos más de 30 TTLs, también nos detendremos, porque supondremos que el host al cual le estamos enviando el paquete ICMP está configurado para no responder a paquetes de echo request.
+
+Como las rutas no son necesariamente la misma cada vez, para cada TTL enviaremos varios paquetes (30 por defecto), y nos quedaremos con el gateway del cual nos llegaron más paquetes ICMP echo reply.
+
+Sorprendentemente, las rutas son bastante estables, y siempre recibimos los replies de los mismos gateways. Las mayores diferencias que notamos son internas a la red de nuestra ISP, en particular Fibertel.
+
 \subsection{Segunda consigna}
+
+Para la detección de enlaces submarinos (es decir, de outliers de nuestra variable aleatoria $ZRTT$), utilizamos exactamente las técnicas descriptas anterioremente en la introducción teórica.
 
 \par Cabe destacar que en el cálculo de los ZRTTs, sólo tomamos valores no-negativos\footnote{Consideramos como 0 a los valores negativos.} de los RTTs entre saltos. 
 Sin embargo, en los gráficos de RTTs que presentamos, los valores pueden ser menores a 0.
 De forma contraria las figuras proveen información confusa y difícil de interpretar.
 
+Además, la segunda consigna concierne a la geolocalización de las IPs de la ruta. Para lograr esto, utilizamos una base de datos pública muy importante, conocida como MaxMind \cite{maxmind}, que tiene una granularidad bastante alta (de ciudades). Esta base de datos, como todas las disponibles libremente tiene errores, que ya veremos en los experimentos.
+
+
+
 \subsection{Conceptos generales}
+???
