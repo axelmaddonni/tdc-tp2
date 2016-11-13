@@ -9,7 +9,7 @@ Más adelante introduciremos más en detalle cómo fue hecha la implementación 
 
 Esto es efectivamente lo que haremos, tendremos una variable aleatoria que será el RTT relativo, es decir, entre saltos, y tomaremos todos los RTT relativos de nuestro traceroute como muestras de esa variable aleatoria. Luego, usando algún modelo de detección de outliers, intentaremos detectar mediciones que corresponden con enlaces submarinos.
 
-Como método de detección de outliers utilizaremos el método descripto en \cite{outliers}. Este método se basa en normalizar la variable aleatoria, para obtener una nueva variable aleatoria que llamaremos ZRTT. Es decir, supondremos que RTT rel (los RTT relativos) son una $N(\mu, \sigma)$ para algún $\mu$, $\sigma$ y normalizaremos para obtener una $N(0,1)$.
+Como método de detección de outliers utilizaremos el método descripto en \cite{outliers}. Este método se basa en normalizar la variable aleatoria, para obtener una nueva variable aleatoria que llamaremos ZRTT. Es decir, supondremos que los RTT relativos son una $N(\mu, \sigma)$ para algún $\mu$, $\sigma$ y normalizaremos para obtener una $N(0,1)$.
 
 \[
   ZRTT = \frac{RTT_i - \overline{RTT}}{s_{RTT}}
