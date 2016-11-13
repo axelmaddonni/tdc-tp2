@@ -1,6 +1,6 @@
 \section{Introducci\'on te\'orica}
 
-En este trabajo nos proponemos usar un traceroute junto con herramientas estadísticas para intentar detectar enlaces submarinos en las rutas IP. 
+\PARstart En este trabajo nos proponemos usar un traceroute junto con herramientas estadísticas para intentar detectar enlaces submarinos en las rutas IP. 
 
 Nuestra implementación de traceroute se basará en paquetes ICMP de tipo \texttt{echo request}. Enviaremos, al destino especificado, paquetes ICMP echo request con distintos TTL, esperando que el paquete se quede sin tiempo en un nodo intermedio, y este nodo intermedio nos mande otro paquete ICMP (esta vez de tipo \texttt{time exceeded}) y de esta manera sabremos la dirección IP del nodo intermedio.
 
