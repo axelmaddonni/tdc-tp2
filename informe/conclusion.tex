@@ -1,2 +1,22 @@
 \section{Conclusión}
 
+\PARstart Observamos algunos de los comportamientos anómalos mencionados en Jobs 2012\cite{anomalias}: el más ubicuo es el primero descripto en el paper, donde ciertos nodos no responden los \textit{Time exceeded}. 
+También observamos el caso donde routers \textit{MPLS} no aparecen en la \textit{traceroute}.
+
+\par En el experimento a la Universidad de Laval se observa una gran cantidad de RTTs entre saltos negativos.
+Esto puede ser un ejemplo de la anomalía "False Roundtrip Times" mencionada en el paper: la ruta de vuelta es asimétrica, por lo que los paquetes de \textit{Time exceeded} son forwardeados hacia delante en la ruta antes de volver al origen, resultando en RTTs relativos negativos.
+
+\par Una anomalía que se observa frecuentemente al realizar \textit{traceroutes} pero que no se presentó en ninguno de los experimentos es la de \textit{missing destination}.
+El hecho de que no se haya incurrido en ésta puede deberse a una mera coincidencia, o puede ser una consecuencia del tipo de destinos elegidos: por la consigna, todos son universidades.
+La típica causa de la anomalía es un \textit{firewall} bloqueando los paquetes \textit{ICMP} al destino; es posible que este \textit{setup} sea preferido por los servers comerciales e ignorado por las instituciones académicas, quizás debido a un mayor enfoque en la \textit{performance} por parte de los primeros.
+
+\par Frecuentemente la herramienta geográfica utilizada realizó estimaciones incorrectas en nodos cercanos a y coincidentes con cables submarinos.
+Esta anomalía no es mencionada en el paper ya que no se enfocan en el aspecto geográfico de las \textit{traceroutes}.
+
+\par Si las estimaciones se realizan a partir de ubicaciones iniciales conocidas, y de un análisis estadístico de las ubicaciones conocidas y estimados de los vecinos de los nodos desconocidos, es de esperar que los errores se concentren en las conexiones entre regiones distintas, como en el caso de los cables submarinos.
+
+\par Ningún experimento presentó falsos negativos, y sólo uno resultó en un falso negativo.
+Si bien era una de las rutas más largas, no consideramos que éste sea el factor fundamental en la predicción fallida; el experimento a la Universidad de \={O}saka (a una distancia similar) fue satisfactorio.
+En el caso del experimento a la Universidad de Alejandría, la ruta submarina mal clasificada era la más corta de todas las analizadas; la longitud de la ruta es un factor mucho menos influyente que su topología: una ruta consistente de pequeños saltos resultará en un $\tau$ mucho menor que una de igual longitud pero con una conexión submarina cubriendo gran parte de su extensión.
+
+\par En el único experimento donde el modelo falló, un cálculo distinto del $\tau$ hubiera sido irrelevante ya que el ZRTT de la conexión marítima mal clasificada es negativo; el falso negativo no podría subsanarse sin un extremo número de falsos positivos.
