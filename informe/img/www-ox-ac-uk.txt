@@ -1,0 +1,25 @@
+TTL     Gateway        RTT    Rel RTT  ZRTT                Lugar               Es ruta
+                                                                              submarina?
+-------------------------------------------------------------------------------------------
+ 1    192.168.0.1     0.212    0.212   -0.44                 * 
+ 2         *            *                                    * 
+ 3         *            *                                    * 
+ 4         *            *                                    * 
+ 5         *            *                                    * 
+ 6   200.89.161.77    13.557  13.345  -0.102    Villa Del Parque, Argentina 
+ 7    200.89.165.1    10.634    0.0   -0.445    Villa Del Parque, Argentina 
+ 8   200.89.165.250   10.704   0.07   -0.443    Villa Del Parque, Argentina 
+ 9   190.216.88.33    9.446     0.0   -0.445      Buenos Aires, Argentina 
+10    67.17.94.249   138.091  128.644  2.859           United States              SI 
+11         *            *                                    * 
+12    4.69.143.190   240.077  101.986  2.175           United States              SI 
+13  212.187.139.166  231.889    0.0   -0.445           United Kingdom 
+14    146.97.33.2    231.813    0.0   -0.445           United Kingdom 
+15   146.97.37.194   232.341   0.527  -0.432           United Kingdom 
+16   193.63.108.94   224.144    0.0   -0.445           United Kingdom 
+17   193.63.108.98   224.717   0.573   -0.43           United Kingdom 
+18   193.63.109.90   233.128   8.411  -0.229           United Kingdom 
+19         *            *                                    * 
+20    192.76.32.62    239.29   6.162  -0.287       Oxford, United Kingdom 
+21   129.67.242.154   233.54    0.0   -0.445       Oxford, United Kingdom 
+
